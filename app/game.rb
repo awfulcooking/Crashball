@@ -19,7 +19,7 @@ ACCELERATION_NORMAL = 0.85
 ACCELERATION_BOOST = 0.97
 ACCELERATION_BRAKE = 0.52
 
-PLAYER_HEIGHT = 20
+PLAYER_HEIGHT = 40
 
 def player!(opts={})
   {
@@ -29,7 +29,7 @@ def player!(opts={})
 
     vertical: false,
 
-    v: (5+rand(15)).rand_sign,
+    v: (5+rand(20)).rand_sign,
     dv: ACCELERATION_NORMAL
   }.merge! opts
 end
