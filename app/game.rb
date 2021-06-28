@@ -61,9 +61,6 @@ init {
       player.x = position
       player.w = size
     end
-
-    player.dx = (5+rand(15)).rand_sign
-    player.ddx = ACCELERATION_NORMAL
   }
 
   $state.player = $state.players[:bottom]
