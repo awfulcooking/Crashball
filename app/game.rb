@@ -145,6 +145,7 @@ end
 
 def play_sound_effect
   audio[:sound_effect] = {
-    input: 'sounds/GameStart.wav'
+    input: 'sounds/GameStart.wav',
+    pitch: 0.45 + 0.1 * ($num_game_starts += 1)
   }
 end
