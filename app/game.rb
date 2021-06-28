@@ -15,17 +15,23 @@ controls.define :brake, keyboard: :shift, controller_one: [:l2]
 controls.define :boost, keyboard: :space, controller_one: [:r2]
 controls.define :kick, keyboard: :e, controller_one: :a
 
-ACCELERATION_NORMAL = 0.85
-ACCELERATION_BOOST = 0.97
-ACCELERATION_BRAKE = 0.52
+ACCELERATION_NORMAL = 0.9
+ACCELERATION_MOVE = 0.89
+ACCELERATION_BOOST = 0.98
+ACCELERATION_BRAKE = 0.68
 
-PLAYER_HEIGHT = 40
+PLAYER_MIN_WIDTH = 150
+PLAYER_HEIGHT = 50
+PLAYER_MOVE_SPEED = 2
+PLAYER_ELEVATION = 0
+
+BOOST_AMOUNT = 10
 
 def player!(opts={})
   {
     x: 0, y: 0,
     w: 0, h: 0,
-    r: rand(255), g: rand(255), b: rand(255),
+    r: rand(230), g: rand(215), b: rand(255),
 
     vertical: false,
 
@@ -39,20 +45,20 @@ init {
 
   $state.background = [
     0, 0, grid.w, grid.h,
-    rand(255), rand(255), rand(255)
+    rand(180), rand(180), rand(200)
   ]
 
   $state.players = {
-    top:    player!(y: grid.h-PLAYER_HEIGHT, w: grid.w, h: PLAYER_HEIGHT),
-    right:  player!(x: grid.w-PLAYER_HEIGHT, w: PLAYER_HEIGHT, h: grid.h, vertical: true),
-    bottom: player!(h: PLAYER_HEIGHT),
-    left:   player!(w: PLAYER_HEIGHT, h: grid.h, vertical: true),
+    top:    player!(y: grid.h-PLAYER_HEIGHT-PLAYER_ELEVATION, w: grid.w, h: PLAYER_HEIGHT),
+    right:  player!(x: grid.w-PLAYER_HEIGHT-PLAYER_ELEVATION, w: PLAYER_HEIGHT, h: grid.h, vertical: true),
+    bottom: player!(y: PLAYER_ELEVATION, h: PLAYER_HEIGHT),
+    left:   player!(x: PLAYER_ELEVATION, w: PLAYER_HEIGHT, h: grid.h, vertical: true),
   }
 
   $state.players.each { |(position, player)|
     max = player.vertical ? grid.h/2 : grid.w/2
     position = max/2 + rand(200) - 100
-    size = 100 + rand(400)
+    size = PLAYER_MIN_WIDTH + rand(400)
 
     if player.vertical
       player.y = position
@@ -63,7 +69,7 @@ init {
     end
   }
 
-  $state.player = $state.players[:bottom]
+  $state.player = $state.players[[:top, :bottom].sample]
 
   $state.nets = {
     top:    {x: 0, y: grid.h-20, w: grid.w, h: 20},
@@ -83,9 +89,9 @@ tick {
   end
 
   movement
-  bounds
   physics
-  
+  bounds
+
   solids << $state.background
 
   for player in $state.players.values
@@ -105,9 +111,15 @@ tick {
 
 def movement
   if controls.left?
-    $state.player.v -= 4
-  elsif controls.right?
-    $state.player.v += 4
+    $state.player.v -= PLAYER_MOVE_SPEED
+  end
+
+  if controls.right?
+    $state.player.v += PLAYER_MOVE_SPEED
+  end
+
+  if controls.boost_down?
+    $state.player.v += BOOST_AMOUNT * $state.player.v.sign
   end
 
   $state.player.dv = case true
@@ -115,9 +127,23 @@ def movement
       ACCELERATION_BRAKE
     when controls.boost?
       ACCELERATION_BOOST
+    when controls.left?, controls.right?
+      ACCELERATION_MOVE
     else
       ACCELERATION_NORMAL
     end
+
+  move_npcs
+end
+
+def move_npcs
+  for _, player in $state.players
+    if player != $state.player
+      next unless rand < 0.02
+
+      player.v += rand(50).rand_sign
+    end
+  end
 end
 
 def physics
@@ -133,16 +159,35 @@ def physics
 end
 
 def bounds
-  if $state.player.x < (0-$state.player.w)
-    $state.player.x = grid.w
-  elsif $state.player.x > grid.w
-    $state.player.x = 0-$state.player.w
+  for _, player in $state.players
+    max_x = grid.w - player.w
+    max_y = grid.h - player.h
+
+    if player.x < 0
+      player.x = 0
+      player.v *= -1
+      # $state.player.v = 0
+    elsif player.x > max_x and player.v.positive?
+      player.x = max_x
+      player.v *= -1
+      # $state.player.v = 0
+    end
+
+    if player.y < 0
+      player.y = 0
+      player.y *= -1
+    elsif player.y > max_y and player.v.positive?
+      player.y = max_y
+      player.v *= -1
+    end
   end
 end
 
 def play_sound_effect
   audio[:sound_effect] = {
     input: 'sounds/GameStart.wav',
-    pitch: rand() + 0.1 * ($num_game_starts += 1) # + ((rand < 0.2) ? -3 : 0)
+    pitch: rand/2 + 0.1 * (($state.num_game_starts += 1) % 20) # + ((rand < 0.2) ? -3 : 0)
   }
 end
+
+init
