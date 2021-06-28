@@ -15,9 +15,9 @@ controls.define :brake, keyboard: :shift, controller_one: [:l2]
 controls.define :boost, keyboard: :space, controller_one: [:r2]
 controls.define :kick, keyboard: :e, controller_one: :a
 
-DDX_NORMAL = 0.85
-DDX_BOOST = 0.97
-DDX_BRAKE = 0.52
+ACCELERATION_NORMAL = 0.85
+ACCELERATION_BOOST = 0.97
+ACCELERATION_BRAKE = 0.52
 
 PLAYER_HEIGHT = 20
 
@@ -26,8 +26,11 @@ def player!(opts={})
     x: 0, y: 0,
     w: 0, h: 0,
     r: rand(255), g: rand(255), b: rand(255),
-    rotation: 0.8,
-    vertical: false
+
+    vertical: false,
+
+    v: (5+rand(15)).rand_sign,
+    dv: ACCELERATION_NORMAL
   }.merge! opts
 end
 
@@ -60,7 +63,7 @@ init {
     end
 
     player.dx = (5+rand(15)).rand_sign
-    player.ddx = DDX_NORMAL
+    player.ddx = ACCELERATION_NORMAL
   }
 
   $state.player = $state.players[:bottom]
@@ -84,6 +87,7 @@ tick {
 
   movement
   bounds
+  physics
   
   solids << $state.background
 
@@ -104,22 +108,31 @@ tick {
 
 def movement
   if controls.left?
-      $state.player.dx -= 4
+    $state.player.v -= 4
   elsif controls.right?
-    $state.player.dx += 4
+    $state.player.v += 4
   end
 
-  $state.player.ddx = case true
+  $state.player.dv = case true
     when controls.brake?
-      DDX_BRAKE
+      ACCELERATION_BRAKE
     when controls.boost?
-      DDX_BOOST
+      ACCELERATION_BOOST
     else
-      DDX_NORMAL
+      ACCELERATION_NORMAL
+    end
+end
+
+def physics
+  for position, player in $state.players
+    if player.vertical
+      player.y += player.v
+    else
+      player.x += player.v
     end
 
-  $state.player.x += $state.player.dx
-  $state.player.dx *= $state.player.ddx
+    player.v *= player.dv
+  end
 end
 
 def bounds
