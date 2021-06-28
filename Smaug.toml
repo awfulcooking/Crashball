@@ -1,15 +1,15 @@
 [project]
 # The name of your game's executable. This should only contain a-z, A-Z, 0-9, _ or -.
-name = "MawStarter"
+name = "Crashball"
 # The game's title. This will show up in the tile bar of your executable.
-title = "MawStarter"
-version = "0.1.0"
-authors = ["TODO: My Name <todo@example.com>"]
+title = "Crashball"
+version = "0.1.1"
+authors = ["mooff"]
 icon = "metadata/icon.png"
 compile_ruby = false
 
 [dragonruby]
-version = "2.17"
+version = "2.18"
 edition = "standard"
 
 [dependencies]
@@ -18,6 +18,6 @@ maw = "1.2.0"
 [itch]
 # The Project URL you set when you created the game on Itch.io. https://my-username.itch.io/my-game.
 # This will also be the name of your build files, so fill it out even if you aren't uploading to Itch.io.
-url = "todo-change-me"
+url = "crashball"
 # Your username on Itch.io.
-username = "todo-change-me"
+username = "moofee"
