@@ -15,9 +15,9 @@ controls.define :brake, keyboard: :shift, controller_one: [:l2]
 controls.define :boost, keyboard: :space, controller_one: [:r2]
 controls.define :kick, keyboard: :e, controller_one: :a
 
-ACCELERATION_NORMAL = 0.9
-ACCELERATION_MOVE = 0.89
-ACCELERATION_BOOST = 0.98
+ACCELERATION_NORMAL = 0.85
+ACCELERATION_MOVE = 0.9
+ACCELERATION_BOOST = 0.96
 ACCELERATION_BRAKE = 0.68
 
 PLAYER_MIN_WIDTH = 150
@@ -166,11 +166,9 @@ def bounds
     if player.x < 0
       player.x = 0
       player.v *= -1
-      # $state.player.v = 0
     elsif player.x > max_x and player.v.positive?
       player.x = max_x
       player.v *= -1
-      # $state.player.v = 0
     end
 
     if player.y < 0
