@@ -12,15 +12,15 @@ controls.define :up, keyboard: [:w, :up, :e], controller_one: :up
 controls.define :down, keyboard: [:w, :down, :c], controller_one: :down
 
 controls.define :brake, keyboard: [:shift, :g], controller_one: [:l2]
-controls.define :boost, keyboard: [:space, :z, :x, :c, :v], controller_one: [:r2]
-controls.define :kick, keyboard: :e, controller_one: :a
+controls.define :boost, keyboard: [:z, :x, :c, :v], controller_one: [:r2]
+controls.define :kick, keyboard: [:e, :space], controller_one: :a
 
 ACCELERATION_NORMAL = 0.85
 ACCELERATION_MOVE = 0.9
 ACCELERATION_BOOST = 0.96
 ACCELERATION_BRAKE = 0.68
 
-PLAYER_MIN_WIDTH = 150
+PLAYER_MIN_WIDTH = 300
 PLAYER_HEIGHT = 50
 PLAYER_MOVE_SPEED = 2
 PLAYER_ELEVATION = 0
@@ -36,12 +36,32 @@ def player!(opts={})
     vertical: false,
 
     v: (5+rand(20)).rand_sign,
-    dv: ACCELERATION_NORMAL
+    dv: ACCELERATION_NORMAL,
+
+    score: 10,
   }.merge! opts
 end
 
+def ball!(opts={})
+  color = [:black, :blue, :gray, :green, :indigo, :orange, :red, :violet, :white, :yellow].sample
+  size = rand(6) + 2
+  {
+    x: rand(200) + 500,
+    y: rand(150) + 400,
+    w: size * 16,
+    h: size * 16,
+    vx: (6+rand(3)).rand_sign,
+    vy: (6+rand(3)).rand_sign,
+    a: rand(50) + 180,
+    path: "sprites/circle/#{color}.png",
+
+    size: size,
+    color: color,
+  }
+end
+
 init {
-  play_sound_effect
+  play_start_sound
 
   $state.background = [
     0, 0, grid.w, grid.h,
@@ -77,6 +97,8 @@ init {
     bottom: {x: 0, y: 0, w: grid.w, h: 20},
     left:   {x: 0, y: 0, w: 20, h: grid.h},
   }
+
+  $state.balls = [ball!(), ball!()]
 }
 
 tick {
@@ -88,15 +110,20 @@ tick {
     exit
   end
 
-  movement
-  physics
-  bounds
+  input
+  motion
+  collision
 
   solids << $state.background
 
   for player in $state.players.values
     solids << player
   end
+
+  sprites << $state.balls
+
+  labels << [200, 600, "Scores: #{$state.players.values.map(&:score)}"]
+  labels << [200, 560, "Scores: #{$state.players.values.map(&:score)}", 255, 255, 255, 200]
 
   if controls.debug?
     solids << $state.nets.values.map { |net|
@@ -109,7 +136,7 @@ tick {
   end
 }
 
-def movement
+def input
   if controls.left?
     $state.player.v -= PLAYER_MOVE_SPEED
   end
@@ -132,21 +159,15 @@ def movement
     else
       ACCELERATION_NORMAL
     end
-
-  move_npcs
 end
 
-def move_npcs
-  for _, player in $state.players
-    if player != $state.player
-      next unless rand < 0.02
-
-      player.v += rand(50).rand_sign
-    end
-  end
+def motion
+  demo_npcs
+  move_players
+  move_balls
 end
 
-def physics
+def move_players
   for position, player in $state.players
     if player.vertical
       player.y += player.v
@@ -158,7 +179,25 @@ def physics
   end
 end
 
-def bounds
+def demo_npcs
+  for _, player in $state.players
+    if player != $state.player
+      next unless rand < 0.02
+
+      player.v += rand(50).rand_sign
+    end
+  end
+end
+
+def move_balls
+  for ball in $state.balls # haha.. balls
+    ball.x += ball.vx
+    ball.y += ball.vy
+    ball.angle += 3
+  end
+end
+
+def collision
   for _, player in $state.players
     max_x = grid.w - player.w
     max_y = grid.h - player.h
@@ -179,12 +218,63 @@ def bounds
       player.v *= -1
     end
   end
+
+  for ball in $state.balls
+    for position in [:top, :right, :bottom, :left]
+      player = $state.players[position]
+      net    = $state.nets[position]
+
+      if ball.intersect_rect? net
+        $state.balls.delete(ball)
+
+        $state.balls << ball!() if rand(3) == 0
+        $state.balls << ball!() if rand(4) == 0
+        $state.balls << ball!() if rand(9) == 0
+        $state.balls << ball!() if $state.balls.empty?
+
+        player.score -= 1
+        play_net_sound ball, net, player
+      end
+
+      if ball.intersect_rect? player
+        case position
+        when :top, :bottom
+          ball.vy *= -1
+        when :left, :right
+          ball.vx *= -1
+        end
+
+        if player == $state.player and controls.kick?
+          play_kick_sound
+
+          ball.vy *= 1.4
+          ball.vx *= 1.3
+        end
+      end
+    end
+  end
 end
 
-def play_sound_effect
-  audio[:sound_effect] = {
+def play_start_sound
+  audio[:start_sound] = {
     input: 'sounds/GameStart.wav',
     pitch: rand/2 + 0.1 * (($state.num_game_starts += 1) % 20) # + ((rand < 0.2) ? -3 : 0)
+  }
+end
+
+def play_net_sound ball, net, player
+  return false # too annoying
+  audio[:net] = {
+    input: 'sounds/GameStart.wav',
+    pitch: 0.7 - (10-player.score)/20.0,
+    gain: 0.6
+  }
+end
+
+def play_kick_sound
+  audio[:kick_sound] = {
+    input: 'sounds/GameStart.wav',
+    pitch: 0.2,
   }
 end
 
