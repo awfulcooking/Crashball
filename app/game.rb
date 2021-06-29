@@ -6,10 +6,10 @@ controls.define :debug, keyboard: :g, controller_one: :b
 controls.define :debug_framerate, keyboard: :t, controller_one: :x
 controls.define :debug_players, keyboard: :p, controller_one: :l1
 
-controls.define :left, keyboard: :a, controller_one: :left
-controls.define :right, keyboard: :d, controller_one: :right
-controls.define :up, keyboard: :w, controller_one: :up
-controls.define :down, keyboard: :s, controller_one: :down
+controls.define :left, keyboard: [:a, :right], controller_one: :left
+controls.define :right, keyboard: [:d, :right], controller_one: :right
+controls.define :up, keyboard: [:w, :up], controller_one: :up
+controls.define :down, keyboard: [:w, :down], controller_one: :down
 
 controls.define :brake, keyboard: :shift, controller_one: [:l2]
 controls.define :boost, keyboard: :space, controller_one: [:r2]
