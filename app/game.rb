@@ -289,7 +289,8 @@ end
 
 def generate_palette_5
   # this generates a five color palette for paddles and the background
-  offset = rand(45) + 90
+  offset_range = 85
+  offset = rand(offset_range) + (90 + offset_range) / 2
 
   h_p0 = rand(360)
   h_p2 = h_p0 + 180
