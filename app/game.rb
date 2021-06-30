@@ -58,9 +58,9 @@ def ball!(opts={})
     y: grid.center.y,
     w: size * 16,
     h: size * 16,
-    vx: (6+rand(3)).rand_sign,
-    vy: (6+rand(3)).rand_sign,
-    a: rand(50) + 180,
+    vx: (7+rand(2)).rand_sign,
+    vy: (7+rand(2)).rand_sign,
+    a: rand(70) + 160,
     path: "sprites/circle/#{color}.png",
 
     size: size,
@@ -87,9 +87,10 @@ init {
   }
 
   $state.players.each { |(position, player)|
-    max = player.vertical ? grid.h/2 : grid.w/2
-    position = max/2 + rand(200) - 100
-    size = PLAYER_MIN_WIDTH + rand(400)
+    max_position = player.vertical ? grid.h/2 : grid.w/2
+    position = max_position/2 + rand(200) - 100
+
+    size = PLAYER_MIN_WIDTH + rand(player.vertical ? 22 : 200)
 
     if player.vertical
       player.y = position
@@ -133,8 +134,8 @@ tick {
 
   sprites << $state.balls
 
-  labels << [200, 600, "Scores: #{$state.players.values.map(&:score)}"]
-  labels << [200, 560, "Scores: #{$state.players.values.map(&:score)}", 255, 255, 255, 200]
+  labels << [200, 600, "Scores: #{$state.players.values.map(&:score)}", 18, 18, 18, 225]
+  labels << [200, 560, "Scores: #{$state.players.values.map(&:score)}", 55, 215, 230, 220]
 
   if controls.debug?
     solids << $state.nets.values.map { |net|
