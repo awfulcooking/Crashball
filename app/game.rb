@@ -13,8 +13,8 @@ controls.define :right, keyboard: [:d, :right, :f, :c, :v], controller_one: :rig
 controls.define :up, keyboard: [:w, :up, :e], controller_one: :up
 controls.define :down, keyboard: [:w, :down, :c], controller_one: :down
 
-controls.define :brake, keyboard: [:shift, :g], controller_one: [:l2]
-controls.define :boost, keyboard: [:z, :x, :c, :v], controller_one: [:r2]
+controls.define :brake, keyboard: [:g, :d], controller_one: [:l2]
+controls.define :boost, keyboard: [:shift], controller_one: [:r2]
 controls.define :kick, keyboard: [:e, :space], controller_one: :a
 
 ACCELERATION_NORMAL = 0.85
