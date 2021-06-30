@@ -28,10 +28,11 @@ PLAYER_ELEVATION = 0
 BOOST_AMOUNT = 10
 
 def player!(opts={})
+  r, g, b = hsv_to_rgb rand(360), 1, 1
   {
     x: 0, y: 0,
     w: 0, h: 0,
-    r: rand(230), g: rand(215), b: rand(255),
+    r: r, g: g, b: b,
 
     vertical: false,
 
@@ -276,6 +277,24 @@ def play_kick_sound
     input: 'sounds/GameStart.wav',
     pitch: 0.2,
   }
+end
+
+def hsv_to_rgb h, s, v
+  # based on conversion listed here: https://www.rapidtables.com/convert/color/hsv-to-rgb.html
+  c = v * s
+  x = c * (1 - ((h / 60) % 2 - 1).abs)
+  m = v - c
+
+  rp, gp, bp = [
+    [c, x, 0], #   0 < h <  60
+    [x, c, 0], #  60 < h < 120
+    [0, c, x], # 120 < h < 180
+    [0, x, c], # 180 < h < 240
+    [x, 0, c], # 240 < h < 300
+    [c, 0, x]  # 300 < h < 360
+  ][h / 60]
+
+  return [rp, gp, bp].map { | p | 255 * (p + m) }
 end
 
 init
