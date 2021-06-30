@@ -24,12 +24,10 @@ ACCELERATION_BRAKE = 0.68
 
 PLAYER_MIN_WIDTH = 300
 PLAYER_HEIGHT = 50
-PLAYER_MOVE_SPEED = 3
-PLAYER_ELEVATION = 5
+PLAYER_MOVE_SPEED = 2
+PLAYER_ELEVATION = 0
 
-BOOST_AMOUNT = 30 # 10-ish is normal. try 50, 100, 150! then just press shift!
-
-NET_SIZE = 10
+BOOST_AMOUNT = 10
 
 def player!(opts={})
   if opts.has_key? :color
@@ -38,9 +36,7 @@ def player!(opts={})
     r, g, b = hsv_to_rgb rand(360), 1, 1
     color = { r: r, g: g, b: b }
   end
-
-  color = {r: 255, g: 255, b: 255, a: 200}.merge! color
-
+  palette = generate_palette_5
   {
     x: 0, y: 0,
     w: 0, h: 0,
@@ -108,10 +104,10 @@ init {
   $state.player = $state.players[[:top, :bottom].sample]
 
   $state.nets = {
-    top:    {x: 0, y: grid.h-NET_SIZE, w: grid.w, h: NET_SIZE},
-    right:  {x: grid.w-NET_SIZE, y: 0, w: NET_SIZE, h: grid.h},
-    bottom: {x: 0, y: 0, w: grid.w, h: NET_SIZE},
-    left:   {x: 0, y: 0, w: NET_SIZE, h: grid.h},
+    top:    {x: 0, y: grid.h-20, w: grid.w, h: 20},
+    right:  {x: grid.w-20, y: 0, w: 20, h: grid.h},
+    bottom: {x: 0, y: 0, w: grid.w, h: 20},
+    left:   {x: 0, y: 0, w: 20, h: grid.h},
   }
 
   $state.balls = [ball!(), ball!()]
@@ -138,13 +134,13 @@ tick {
 
   sprites << $state.balls
 
+  labels << [200, 600, "Scores: #{$state.players.values.map(&:score)}", 18, 18, 18, 225]
+  labels << [200, 560, "Scores: #{$state.players.values.map(&:score)}", 55, 215, 230, 220]
+
   if controls.debug?
     solids << $state.nets.values.map { |net|
       {r: 0, g: 0, b: 200, a: 130}.merge! net
     }
-
-    labels << [200, 600, "Scores: #{$state.players.values.map(&:score)}", 18, 18, 18, 225]
-    labels << [200, 560, "Scores: #{$state.players.values.map(&:score)}", 55, 215, 230, 220]
   end
 
   if controls.debug_framerate?
@@ -273,7 +269,6 @@ end
 def hit! position, player, ball
   play_net_sound ball, position
   player.score -= 1
-  player.a -= 20
 
   if player.score.zero?
     game_over!
@@ -284,7 +279,7 @@ def game_over!
   init
 end
 
-SIMULTANEOUS_SOUNDS = 3
+SIMULTANEOUS_SOUNDS = 4
 
 def sound_index
   @sound_index += 1
