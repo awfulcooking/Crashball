@@ -52,8 +52,8 @@ def ball!(opts={})
   color = [:black, :blue, :gray, :green, :indigo, :orange, :red, :violet, :white, :yellow].sample
   size = rand(6) + 2
   {
-    x: rand(200) + 500,
-    y: rand(150) + 400,
+    x: grid.center.x,
+    y: grid.center.y,
     w: size * 16,
     h: size * 16,
     vx: (6+rand(3)).rand_sign,
