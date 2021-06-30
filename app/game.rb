@@ -299,7 +299,7 @@ def play_start_sound
 end
 
 def play_net_sound ball, position
-  audio["net_#{position}_#{sound_index}}"] = {
+  audio["net_#{sound_index}}"] = {
     input: 'sounds/GameStart.wav',
     pitch: 0.3 + %i(top right left bottom).index(position) / 18.0,
     gain: 0.9
