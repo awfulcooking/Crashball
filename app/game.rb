@@ -1,5 +1,7 @@
 Maw!
 
+time_ticks!
+
 controls.define :quit, keyboard: :q, controller_one: [:start], mouse: :button_middle
 controls.define :reset, keyboard: :r, controller_one: :r1
 controls.define :debug, keyboard: :t, controller_one: :b
