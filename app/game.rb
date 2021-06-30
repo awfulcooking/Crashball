@@ -244,8 +244,7 @@ def collision
         $state.balls << ball!() if rand(9) == 0
         $state.balls << ball!() if $state.balls.empty?
 
-        player.score -= 1
-        play_net_sound ball, net, player
+        hit! position, player, ball
       end
 
       if ball.intersect_rect? player
@@ -267,6 +266,26 @@ def collision
   end
 end
 
+def hit! position, player, ball
+  play_net_sound ball, position
+  player.score -= 1
+
+  if player.score.zero?
+    game_over!
+  end
+end
+
+def game_over!
+  init
+end
+
+SIMULTANEOUS_SOUNDS = 4
+
+def sound_index
+  @sound_index += 1
+  @sound_index % SIMULTANEOUS_SOUNDS
+end
+
 def play_start_sound
   audio[:start_sound] = {
     input: 'sounds/GameStart.wav',
@@ -274,17 +293,16 @@ def play_start_sound
   }
 end
 
-def play_net_sound ball, net, player
-  return false # too annoying
-  audio[:net] = {
+def play_net_sound ball, position
+  audio["net_#{position}_#{sound_index}}"] = {
     input: 'sounds/GameStart.wav',
-    pitch: 0.7 - (10-player.score)/20.0,
-    gain: 0.6
+    pitch: 0.3 + %i(top right left bottom).index(position) / 18.0,
+    gain: 0.9
   }
 end
 
 def play_kick_sound
-  audio[:kick_sound] = {
+  audio["kick_#{sound_index}"] = {
     input: 'sounds/GameStart.wav',
     pitch: 0.2,
   }
