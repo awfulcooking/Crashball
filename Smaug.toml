@@ -3,8 +3,8 @@
 name = "Crashball"
 # The game's title. This will show up in the tile bar of your executable.
 title = "Crashball"
-version = "0.1.5"
-authors = ["mooff"]
+version = "0.2.0"
+authors = ["mooff", "kota"]
 icon = "metadata/icon.png"
 compile_ruby = false
 
@@ -13,7 +13,7 @@ version = "2.19"
 edition = "standard"
 
 [dependencies]
-maw = "1.2.0"
+maw = "1.3.2"
 
 [itch]
 # The Project URL you set when you created the game on Itch.io. https://my-username.itch.io/my-game.

@@ -2,9 +2,9 @@
 # Do not manually edit this file. Edit Smaug.toml instead.
 
 devid=moofee
-devtitle=mooff
+devtitle=mooff kota
 gameid=Crashball
 gametitle=Crashball
-version=0.1.5
+version=0.2.0
 icon=metadata/icon.png
 compile_ruby=false
