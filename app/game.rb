@@ -31,47 +31,6 @@ BOOST_AMOUNT = 30 # 10-ish is normal. try 50, 100, 150! then just press shift!
 
 NET_SIZE = 10
 
-def player!(opts={})
-  if opts.has_key? :color
-    color = opts[:color]
-  else
-    r, g, b = hsv_to_rgb rand(360), 1, 1
-    color = { r: r, g: g, b: b }
-  end
-
-  color = {r: 255, g: 255, b: 255, a: 200}.merge! color
-
-  {
-    x: 0, y: 0,
-    w: 0, h: 0,
-
-    vertical: false,
-
-    v: (5+rand(20)).rand_sign,
-    dv: ACCELERATION_NORMAL,
-
-    score: 10,
-  }.merge(color).merge! opts
-end
-
-def ball!(opts={})
-  color = [:black, :blue, :gray, :green, :indigo, :orange, :red, :violet, :white, :yellow].sample
-  size = rand(6) + 2
-  {
-    x: grid.center.x,
-    y: grid.center.y,
-    w: size * 16,
-    h: size * 16,
-    vx: (7+rand(2)).rand_sign,
-    vy: (7+rand(2)).rand_sign,
-    a: rand(70) + 160,
-    path: "sprites/circle/#{color}.png",
-
-    size: size,
-    color: color,
-  }
-end
-
 init {
   play_start_sound
 
@@ -227,51 +186,6 @@ end
 
 def game_over!
   init
-end
-
-def generate_palette_5
-  # this generates a five color palette for paddles and the background
-  offset_range = 85
-  offset = rand(offset_range) + (90 + offset_range) / 2
-
-  h_p0 = rand(360)
-  h_p2 = h_p0 + 180
-
-  h_p1 = h_p2 + offset
-  h_p3 = h_p2 - offset
-
-  palette_hsv = [
-    [h_p0, 1, 1],
-    [h_p1, 1, 1],
-    [h_p2, 1, 1],
-    [h_p3, 1, 1],
-    [h_p0, 0.7 * rand, 0.2 * rand + 0.1]
-  ]
-
-  palette_hsv.map do |hsv|
-    r, g, b = hsv_to_rgb *hsv
-    { r: r, g: g, b: b }
-  end
-end
-
-def hsv_to_rgb h, s, v
-  # based on conversion listed here: https://www.rapidtables.com/convert/color/hsv-to-rgb.html
-  h = h % 360
-
-  c = v * s
-  x = c * (1 - ((h / 60) % 2 - 1).abs)
-  m = v - c
-
-  rp, gp, bp = [
-    [c, x, 0], #   0 < h <  60
-    [x, c, 0], #  60 < h < 120
-    [0, c, x], # 120 < h < 180
-    [0, x, c], # 180 < h < 240
-    [x, 0, c], # 240 < h < 300
-    [c, 0, x]  # 300 < h < 360
-  ][h / 60]
-
-  return [rp, gp, bp].map { | p | 255 * (p + m) }
 end
 
 init
