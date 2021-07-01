@@ -463,7 +463,7 @@ def generate_palette_5
     [h_p1, 1, 1],
     [h_p2, 1, 1],
     [h_p3, 1, 1],
-    [h_p0, 0.7 * rand, 0.3 * rand]
+    [h_p0, 0.7 * rand, 0.2 * rand + 0.1]
   ]
 
   palette_hsv.map do |hsv|
