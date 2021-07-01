@@ -3,7 +3,7 @@
 name = "crashball"
 # The game's title. This will show up in the tile bar of your executable.
 title = "Crashball"
-version = "0.4.1"
+version = "0.4.2"
 authors = ["mooff", "kota"]
 icon = "metadata/icon.png"
 compile_ruby = false
