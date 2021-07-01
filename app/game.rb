@@ -17,6 +17,8 @@ controls.define :brake, keyboard: [:d], controller_one: [:l2]
 controls.define :boost, keyboard: [:a, :shift], controller_one: [:r2]
 controls.define :kick, keyboard: [:e, :g, :space], controller_one: :a
 
+controls.define :quicken, keyboard: [:k, :end], controller_one: :select
+
 ACCELERATION_NORMAL = 0.85
 ACCELERATION_MOVE = 0.9
 ACCELERATION_BOOST = 0.95
@@ -83,6 +85,10 @@ tick {
 
   if controls.quit?
     exit
+  end
+
+  if controls.quicken_held? and tick_count % 10 == 0
+    $state.balls << ball!()
   end
 
   input
