@@ -3,8 +3,8 @@
 
 devid=moofee
 devtitle=mooff kota
-gameid=Crashball
+gameid=crashball
 gametitle=Crashball
-version=0.3.0
+version=0.4.1
 icon=metadata/icon.png
 compile_ruby=false
