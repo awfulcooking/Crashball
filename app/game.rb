@@ -418,11 +418,8 @@ def game_over!
   init
 end
 
-SIMULTANEOUS_SOUNDS = 3
-
 def sound_index
   @sound_index += 1
-  @sound_index % SIMULTANEOUS_SOUNDS
 end
 
 def play_start_sound
