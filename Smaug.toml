@@ -1,9 +1,9 @@
 [project]
 # The name of your game's executable. This should only contain a-z, A-Z, 0-9, _ or -.
-name = "Crashball"
+name = "crashball"
 # The game's title. This will show up in the tile bar of your executable.
 title = "Crashball"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["mooff", "kota"]
 icon = "metadata/icon.png"
 compile_ruby = false
