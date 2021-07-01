@@ -86,8 +86,8 @@ tick {
   end
 
   input
-  motion
   collision
+  motion
 
   solids << $state.background
 
@@ -159,7 +159,7 @@ end
 
 def demo_npcs
   for _, player in $state.players
-    if player != $state.player
+    unless $state.player == player or player.score.zero?
       next unless rand < 0.02
 
       player.v += rand(50).rand_sign
@@ -187,10 +187,13 @@ def hit! position, player, ball
   elsif player.score.zero?
     if player.vertical
       player.h = grid.h
+      player.y = 0
     else
       player.w = grid.w
+      player.x = 0
     end
-    player.position = 0
+    player.v = 0
+    player.dv = 0
   end
 end
 

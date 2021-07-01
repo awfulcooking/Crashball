@@ -6,4 +6,4 @@ require 'app/requires.rb'
 # Add a new file to app/ and require it
 # from app/requires.rb
 
-# Otherwise, your code will execute before Maw :)
+# Otherwise, your code will execute before your Smaug dependencies :)
