@@ -134,7 +134,7 @@ def ball_rect_collision? ball, player
 
       surface_normal = norm x: corner.x - pt.x, y: corner.y - pt.y
       ref = norm reflection_vec(ball_dir, surface_normal)
-      puts ref
+
       vel = Math::sqrt(ball.vx * ball.vx + ball.vy * ball.vy)
       ball.vx = vel * ref.x
       ball.vy = vel * ref.y
