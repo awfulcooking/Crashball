@@ -92,6 +92,9 @@ tick {
   solids << $state.background
 
   for player in $state.players.values
+    if player.score.zero?
+      player.a = 50 + (Math.sin(tick_count / 30) + 1) / 2 * 150
+    end
     solids << player
   end
 
@@ -176,16 +179,21 @@ end
 
 def hit! position, player, ball
   play_net_sound ball, position
-  player.score -= 1
+  player.score -= 1 unless player.score.zero?
   player.a -= 20
 
-  if player.score.zero?
+  if $state.players.values.count { |player| player.score.zero? } == 3
     game_over!
+  elsif player.score.zero?
+    if player.vertical
+      player.h = grid.h
+    else
+      player.w = grid.w
+    end
+    player.position = 0
   end
 end
 
 def game_over!
   init
 end
-
-init
