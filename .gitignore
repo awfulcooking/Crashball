@@ -1,3 +1,6 @@
 builds/
 logs/
 exceptions/
+
+*~
+*.swp
