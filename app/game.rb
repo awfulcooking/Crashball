@@ -44,7 +44,7 @@ init {
   palette = generate_palette_5
   bg_color = palette[4]
 
-  $state.background = [
+  static_solids << $state.background = [
     0, 0, grid.w, grid.h,
     bg_color.r, bg_color.g, bg_color.b
   ]
@@ -72,6 +72,8 @@ init {
   }
 
   $state.player = $state.players[[:top, :bottom].sample]
+
+  static_solids << $state.players.values
 
   $state.nets = {
     top:    {x: 0, y: grid.h-NET_SIZE, w: grid.w, h: NET_SIZE},
@@ -104,13 +106,10 @@ tick {
   collision
   motion
 
-  solids << $state.background
-
   for player in $state.players.values
     if player.score.zero?
       player.a = 50 + (Math.sin(tick_count / 30) + 1) / 2 * 150
     end
-    solids << player
   end
 
   sprites << $state.balls
