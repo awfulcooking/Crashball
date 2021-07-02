@@ -1,6 +1,6 @@
 Maw!
 
-time_ticks!
+time_ticks! log_interval: 60 unless production?
 
 controls.define :quit, keyboard: :q, controller_one: [:start], mouse: :button_middle
 controls.define :reset, keyboard: :r, controller_one: :r1
