@@ -19,15 +19,15 @@ controls.define :kick, keyboard: [:e, :g, :space], controller_one: :a
 
 controls.define :quicken, keyboard: [:k, :end], controller_one: :select
 
-ACCELERATION_NORMAL = 0.85
+ACCELERATION_NORMAL = 0.9
 ACCELERATION_MOVE = 0.9
 ACCELERATION_BOOST = 0.95
 ACCELERATION_BRAKE = 0.68
 
 PLAYER_MIN_WIDTH = 150
-PLAYER_HEIGHT = 50
+PLAYER_HEIGHT = 40
 PLAYER_MOVE_SPEED = 3
-PLAYER_ELEVATION = 5
+PLAYER_ELEVATION = 0
 
 BOOST_AMOUNT = 30 # 10-ish is normal. try 50, 100, 150! then just press shift!
 
