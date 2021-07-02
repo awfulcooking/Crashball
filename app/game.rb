@@ -8,6 +8,8 @@ controls.define :debug, keyboard: :t, controller_one: :b
 controls.define :debug_framerate, keyboard: :t, controller_one: :x
 controls.define :debug_players, keyboard: :p, controller_one: :l1
 
+controls.define :mute, keyboard: :m, controller_one: :r3
+
 controls.define :left, keyboard: [:left, :s, :z, :x], controller_one: :left
 controls.define :right, keyboard: [:right, :f, :c, :v], controller_one: :right
 controls.define :up, keyboard: [:w, :up, :e], controller_one: :up
@@ -34,6 +36,9 @@ BOOST_AMOUNT = 30 # 10-ish is normal. try 50, 100, 150! then just press shift!
 NET_SIZE = 10
 
 init {
+  Sound.new_pitch!
+
+  play_background_music
   play_start_sound
 
   palette = generate_palette_5
@@ -85,6 +90,10 @@ tick {
 
   if controls.quit?
     exit
+  end
+
+  if controls.mute_down?
+    toggle_background_music_mute
   end
 
   if controls.quicken_held? and tick_count % 10 == 0
