@@ -24,7 +24,7 @@ ACCELERATION_MOVE = 0.9
 ACCELERATION_BOOST = 0.95
 ACCELERATION_BRAKE = 0.68
 
-PLAYER_MIN_WIDTH = 300
+PLAYER_MIN_WIDTH = 150
 PLAYER_HEIGHT = 50
 PLAYER_MOVE_SPEED = 3
 PLAYER_ELEVATION = 5
@@ -55,7 +55,7 @@ init {
     max_position = player.vertical ? grid.h/2 : grid.w/2
     position = max_position/2 + rand(200) - 100
 
-    size = PLAYER_MIN_WIDTH + rand(player.vertical ? 22 : 200)
+    size = PLAYER_MIN_WIDTH + rand(player.vertical ? 50 : 200)
 
     if player.vertical
       player.y = position
