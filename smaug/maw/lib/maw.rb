@@ -2,7 +2,7 @@
 # https://github.com/togetherbeer/maw
 #
 # @copyright 2021 mooff <mooff@@together.beer>
-# @version 1.3.1
+# @version 1.3.4
 # @license AGPLv3
 
 $outputs = $args.outputs
@@ -48,7 +48,7 @@ module Maw
 
           @tick_times[(@tick_times_i += 1) % @tick_time_history_count] = Time.now - start
 
-          if @tick_time_log and $args.tick_count % (60*5) == 0
+          if @tick_time_log and $args.tick_count % (@tick_time_log_interval) == 0
             total = 0
             for time in @tick_times
               total += time
@@ -67,6 +67,7 @@ module Maw
       @tick_times = []
       @tick_time_history_count = opts[:history] || 64
       @tick_time_log = opts[:log] != false
+      @tick_time_log_interval = opts[:log_interval] || 60*5 # log every this number of frames
     end
   end
 
@@ -89,8 +90,7 @@ module Maw
 
           eval "
             module ::Maw::Ergonomic
-              private
-              def #{name}
+              private def #{name}
                 $args.#{name}
               end
             end"
@@ -124,14 +124,26 @@ module Maw
     def sounds
       $outputs.sounds
     end
+
+    PRODUCTION = $gtk.production
+
+    def prod?; PRODUCTION; end
+    def dev?; !PRODUCTION; end
+
+    alias :production? :prod?
+    alias :development? :dev?
   end
 
   class Controls
+    @@i = 0
+    def self.next_name
+      "Control Set #{@@i+=1}"
+    end
+
     attr_accessor :name
     
-    @@i = 0    
-    def initialize name="Control Set #{@@i+=1}", &blk
-      @name = name
+    def initialize name=nil, &blk
+      @name = name || Controls.next_name
 
       instance_exec(&blk) if blk
       self
