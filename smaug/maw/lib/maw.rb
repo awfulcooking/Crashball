@@ -2,7 +2,7 @@
 # https://github.com/togetherbeer/maw
 #
 # @copyright 2021 mooff <mooff@@together.beer>
-# @version 1.3.8
+# @version 1.3.9
 # @license AGPLv3
 
 $outputs = $args.outputs
@@ -200,6 +200,27 @@ module Maw
 
     def stub action
       define action, {}
+    end
+
+    def method_missing name, *args, &blk
+      action = method_name_to_action name
+      if !$gtk.production
+        log_info "#{to_s} Defining stub for #{action} due to .#{name} being called."
+        log_info "#{to_s} You can hook it up like:"
+        log_info "#{to_s}   controls.define :#{action}, keyboard: :e, controller_one: :b"
+      end
+      stub action
+      send action
+    end
+
+    def method_name_to_action name
+      name = name.to_s.sub('?', '')
+      for suffix in ['_down', '_held', '_up', '_latch']
+        if name.end_with?(suffix)
+          name = name[0..name.rindex(suffix)-1]
+        end
+      end
+      name.to_sym
     end
 
     private
