@@ -48,8 +48,8 @@ $controls = {}
 $control_schemes.each do |position, actions|
   $controls[position] = Maw::Controls.new {
     actions.each do |action, map|
-      map.delete :controller_three
-      map.delete :controller_four
+      map.delete :controller_three  # these are not exposed
+      map.delete :controller_four   # by gtk yet
       define action, map
     end
   }
