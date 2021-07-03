@@ -42,7 +42,7 @@ def collision
         ball.rotation *= 1 if rand(3).zero?
 
         if player[:controls].kick?
-          play_kick_sound
+          Sound.play_kick
 
           ball.vy *= 1.4
           ball.vx *= 1.3

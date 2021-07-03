@@ -18,9 +18,8 @@ NET_SIZE = 3
 
 init {
   Sound.new_pitch!
-
-  # play_background_music
-  play_start_sound
+  Sound.play_game_start
+  # Sound.play_background_music
 
   palette = generate_palette_5
   bg_color = palette[4]
@@ -78,7 +77,7 @@ tick {
   end
 
   if controls.mute_down?
-    toggle_background_music_mute
+    Sound.toggle_background_music_mute
   end
 
   if controls.quicken_held? and tick_count % 10 == 0
@@ -180,7 +179,7 @@ def move_balls
 end
 
 def hit! position, player, ball
-  play_net_sound ball, position
+  Sound.play_net ball, position
   player.score -= 1 unless player.score.zero?
   player.a -= 20
 
