@@ -18,6 +18,7 @@ def player!(opts={})
     dv: ACCELERATION_NORMAL,
 
     score: 10,
+    controls: nil,
   }.merge(color).merge! opts
 end
 

@@ -2,25 +2,6 @@ Maw!
 
 time_ticks! log_interval: 60 unless production?
 
-controls.define :quit, keyboard: :q, controller_one: [:start], mouse: :button_middle
-controls.define :reset, keyboard: :r, controller_one: :r1
-controls.define :debug, keyboard: :t, controller_one: :b
-controls.define :debug_framerate, keyboard: :t, controller_one: :x
-controls.define :debug_players, keyboard: :p, controller_one: :l1
-
-controls.define :mute, keyboard: :m, controller_one: :r3
-
-controls.define :left, keyboard: [:left, :s, :z, :x], controller_one: :left
-controls.define :right, keyboard: [:right, :f, :c, :v], controller_one: :right
-controls.define :up, keyboard: [:w, :up, :e], controller_one: :up
-controls.define :down, keyboard: [:w, :down, :c], controller_one: :down
-
-controls.define :brake, keyboard: [:d], controller_one: [:l2]
-controls.define :boost, keyboard: [:a, :shift], controller_one: [:r2]
-controls.define :kick, keyboard: [:e, :g, :space], controller_one: :a
-
-controls.define :quicken, keyboard: [:k, :end], controller_one: :select
-
 ACCELERATION_NORMAL = 0.9
 ACCELERATION_MOVE = 0.9
 ACCELERATION_BOOST = 0.95
@@ -56,7 +37,7 @@ init {
     left:   player!(x: PLAYER_ELEVATION, w: PLAYER_HEIGHT, h: grid.h, vertical: true, color: palette[3]),
   }
 
-  $state.players.each { |(position, player)|
+  $state.players.each { |(screen_position, player)|
     max_position = player.vertical ? grid.h/2 : grid.w/2
     position = max_position/2 + rand(200) - 100
 
@@ -69,9 +50,9 @@ init {
       player.x = position
       player.w = size
     end
-  }
 
-  $state.player = $state.players[[:top, :bottom].sample]
+    player.controls = $controls[screen_position]
+  }
 
   static_solids << $state.players.values
 
@@ -129,32 +110,36 @@ tick {
 }
 
 def input
-  if controls.left?
-    $state.player.v -= PLAYER_MOVE_SPEED
-  end
+  for _, player in $state.players
+    controls = player[:controls]
 
-  if controls.right?
-    $state.player.v += PLAYER_MOVE_SPEED
-  end
-
-  if controls.boost_down?
-    $state.player.v += BOOST_AMOUNT * $state.player.v.sign
-  end
-
-  $state.player.dv = case true
-    when controls.brake?
-      ACCELERATION_BRAKE
-    when controls.boost?
-      ACCELERATION_BOOST
-    when controls.left?, controls.right?
-      ACCELERATION_MOVE
-    else
-      ACCELERATION_NORMAL
+    if controls.left?
+      player.v -= PLAYER_MOVE_SPEED
     end
+
+    if controls.right?
+      player.v += PLAYER_MOVE_SPEED
+    end
+
+    if controls.boost_down?
+      player.v += BOOST_AMOUNT * player.v.sign
+    end
+
+    player.dv = case true
+      when controls.brake?
+        ACCELERATION_BRAKE
+      when controls.boost?
+        ACCELERATION_BOOST
+      when controls.left?, controls.right?
+        ACCELERATION_MOVE
+      else
+        ACCELERATION_NORMAL
+      end
+  end
 end
 
 def motion
-  demo_npcs
+  # demo_npcs
   move_players
   move_balls
 end
@@ -172,8 +157,8 @@ def move_players
 end
 
 def demo_npcs
-  for _, player in $state.players
-    unless $state.player == player or player.score.zero?
+  for position, player in $state.players
+    unless position == :bottom or player.score.zero?
       next unless rand < 0.02
 
       player.v += rand(50).rand_sign

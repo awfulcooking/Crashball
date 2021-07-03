@@ -38,7 +38,7 @@ def collision
       end
 
       if ball_rect_collision? ball, player
-        if player == $state.player and controls.kick?
+        if player[:controls].kick?
           play_kick_sound
 
           ball.vy *= 1.4
