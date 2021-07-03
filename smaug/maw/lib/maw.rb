@@ -2,7 +2,7 @@
 # https://github.com/togetherbeer/maw
 #
 # @copyright 2021 mooff <mooff@@together.beer>
-# @version 1.3.7
+# @version 1.3.8
 # @license AGPLv3
 
 $outputs = $args.outputs
@@ -197,6 +197,10 @@ module Maw
     end
 
     alias :action :define
+
+    def stub action
+      define action, {}
+    end
 
     private
 
