@@ -32,7 +32,7 @@ init {
   $state.players = {
     top:    player!(y: grid.h-PLAYER_HEIGHT-PLAYER_ELEVATION, w: grid.w, h: PLAYER_HEIGHT, color: palette[0]),
     right:  player!(x: grid.w-PLAYER_HEIGHT-PLAYER_ELEVATION, w: PLAYER_HEIGHT, h: grid.h, vertical: true, color: palette[1]),
-    bottom: player!(y: PLAYER_ELEVATION, h: PLAYER_HEIGHT, color: palette[2]),
+    bottom: player!(y: PLAYER_ELEVATION, h: PLAYER_HEIGHT, color: palette[2], npc: false),
     left:   player!(x: PLAYER_ELEVATION, w: PLAYER_HEIGHT, h: grid.h, vertical: true, color: palette[3]),
   }
 
@@ -122,6 +122,10 @@ def input
       player.v += PLAYER_MOVE_SPEED
     end
 
+    if controls.left? or controls.right?
+      player.npc = false
+    end
+
     if controls.boost_down?
       player.v += BOOST_AMOUNT * player.v.sign
     end
@@ -140,8 +144,7 @@ def input
 end
 
 def motion
-  # demo_npcs
-  demo_npcs if controls.demo_latch?
+  demo_npcs
   move_players
   move_balls
 end
@@ -160,7 +163,7 @@ end
 
 def demo_npcs
   for position, player in $state.players
-    unless position == :bottom or player.score.zero?
+    if player.npc and player.score > 0
       next unless rand < 0.02
 
       player.v += rand(50).rand_sign

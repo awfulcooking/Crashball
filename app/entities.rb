@@ -19,6 +19,7 @@ def player!(opts={})
 
     score: 10,
     controls: nil,
+    npc: true,
   }.merge(color).merge! opts
 end
 
