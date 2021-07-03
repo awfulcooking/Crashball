@@ -14,7 +14,7 @@ PLAYER_ELEVATION = 0
 
 BOOST_AMOUNT = 30 # 10-ish is normal. try 50, 100, 150! then just press shift!
 
-NET_SIZE = 10
+NET_SIZE = 3
 
 init {
   Sound.new_pitch!
