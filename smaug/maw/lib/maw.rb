@@ -2,7 +2,7 @@
 # https://github.com/togetherbeer/maw
 #
 # @copyright 2021 mooff <mooff@@together.beer>
-# @version 1.3.6
+# @version 1.3.7
 # @license AGPLv3
 
 $outputs = $args.outputs
@@ -154,6 +154,7 @@ module Maw
     
     def initialize name=nil, &blk
       @name = name || Controls.next_name
+      @latch = {}
 
       instance_exec(&blk) if blk
       self
@@ -162,9 +163,19 @@ module Maw
     def to_s; "[#{name}]"; end
 
     def is? state, device, key
-      if device == :mouse # mouse doesn't support state qualifiers like .key_down, .key_held etc
+      case device
+      when :mouse
+        # mouse doesn't support state qualifiers .key_down, .key_held etc
         $args.inputs.mouse.send(key)
+      when :controller_three
+        # controller_three is not aliased under inputs, but
+        # we can make it work
+        $args.inputs.controllers[2]&.send(state)&.send(key)
+      when :controller_four
+        # same deal here
+        $args.inputs.controllers[3]&.send(state)&.send(key)
       else
+        # this is the normal path
         $args.inputs.send(device).send(state).send(key)
       end
     end
@@ -179,6 +190,7 @@ module Maw
       map = normalize map
 
       define_down action, map
+      define_latch action, map
       define_held action, map
       define_up action, map
       define_active action, map
@@ -203,6 +215,18 @@ module Maw
     def define_up action, map
       [:"#{action}_up", :"#{action}_up?"].each do |name|
         define_singleton_method(name) { any? :key_up, map }
+      end
+    end
+
+    def define_latch action, map
+      [:"#{action}_latch", :"#{action}_latch?"].each do |name|
+        define_singleton_method(name) {
+          if any?(:key_down, map)
+            @latch[action] = !@latch[action]
+          else
+            @latch[action]
+          end
+        }
       end
     end
 
