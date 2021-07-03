@@ -49,21 +49,9 @@ $control_schemes = {
 $controls = {}
 
 $control_schemes.each do |position, actions|
-  $controls[position] = Maw::Controls.new {
+  $controls[position] = Maw::Controls.new("#{position} controls") {
     actions.each do |action, map|
-      map.delete :controller_three  # these are not exposed
-      map.delete :controller_four   # by gtk yet
       define action, map
     end
   }
 end
-
-# $controls = Hash[$control_scheme.map { |position, actions|
-#   [position, Maw::Controls.new {
-#     actions.each do |action, map|
-#       map.delete :controller_three
-#       map.delete :controller_four
-#       define action, map
-#     end
-#   }]
-# }]
