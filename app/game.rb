@@ -67,6 +67,8 @@ init {
 }
 
 tick {
+  next if controls.pause_latch?
+
   if controls.reset_down?
     init
   end
@@ -140,6 +142,7 @@ end
 
 def motion
   # demo_npcs
+  demo_npcs if controls.demo_latch?
   move_players
   move_balls
 end

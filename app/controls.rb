@@ -1,14 +1,17 @@
 # global controls
 
 controls.define :quit, mouse: :button_middle
+controls.define :pause, keyboard: :escape, controller_one: :start, controller_two: :start
 
 controls.define :reset, keyboard: :delete, controller_one: :r1
 controls.define :debug, keyboard: :t, controller_one: :b
 controls.define :debug_framerate, keyboard: :end, controller_one: :x
 
+controls.define :demo, keyboard: :n, controller_one: :select, controller_two: :select
+
 controls.define :mute, keyboard: :m, controller_one: :r3, controller_two: :r3
 
-controls.define :quicken, keyboard: [:forward_slash, :pagedown], controller_one: :select, controller_two: :select
+controls.define :quicken, keyboard: [:forward_slash, :pagedown], controller_one: :l3, controller_two: :l3
 
 # player controls
 
