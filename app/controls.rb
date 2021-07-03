@@ -1,19 +1,24 @@
-# global controls
+# Global Controls
 
-controls.define :quit, mouse: :button_middle
-controls.define :pause, keyboard: :escape, controller_one: :start, controller_two: :start
+controls do
+  if desktop?
+    define :quit, mouse: :button_middle
+  end
 
-controls.define :reset, keyboard: :delete, controller_one: :r1
-controls.define :debug, keyboard: :t, controller_one: :b
-controls.define :debug_framerate, keyboard: :end, controller_one: :x
+  define :mute, keyboard: :m, controller_one: :r3, controller_two: :r3
+  define :demo, keyboard: :n, controller_one: :select, controller_two: :select
+  define :pause, keyboard: :escape, controller_one: :start, controller_two: :start
+  define :reset, keyboard: :delete, controller_one: :r1
 
-controls.define :demo, keyboard: :n, controller_one: :select, controller_two: :select
+  if dev?
+    define :debug, keyboard: :t, controller_one: :b
+    define :debug_framerate, keyboard: :end, controller_one: :x
+  end
 
-controls.define :mute, keyboard: :m, controller_one: :r3, controller_two: :r3
+  define :quicken, keyboard: [:forward_slash, :pagedown], controller_one: :l3, controller_two: :l3
+end
 
-controls.define :quicken, keyboard: [:forward_slash, :pagedown], controller_one: :l3, controller_two: :l3
-
-# player controls
+# Player Controls
 
 $control_schemes = {
   top: {
