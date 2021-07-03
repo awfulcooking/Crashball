@@ -172,7 +172,7 @@ def move_balls
     ball.prev_y = ball.y
     ball.x += ball.vx
     ball.y += ball.vy
-    ball.angle += 3
+    ball.angle += ball.rotation
   end
 end
 

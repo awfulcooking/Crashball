@@ -38,6 +38,9 @@ def collision
       end
 
       if ball_rect_collision? ball, player
+        ball.rotation += 1
+        ball.rotation *= 1 if rand(3).zero?
+
         if player[:controls].kick?
           play_kick_sound
 

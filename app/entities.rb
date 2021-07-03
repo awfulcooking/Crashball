@@ -35,6 +35,8 @@ def ball!(opts={})
     a: rand(70) + 160,
     path: "sprites/circle/#{color}.png",
 
+    rotation: 2,
+
     size: size,
     color: color,
   }
