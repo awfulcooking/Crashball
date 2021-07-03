@@ -33,7 +33,6 @@ module Sound
   end
 
   def play_net_sound ball, position
-    return false
     audio["net_#{sound_index}}"] = {
       input: 'sounds/GameStart.wav',
       pitch: Sound.pitch_offset + 0.3 + %i(top right left bottom).index(position) / 18.0,

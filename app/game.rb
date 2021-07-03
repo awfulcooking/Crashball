@@ -19,7 +19,7 @@ NET_SIZE = 3
 init {
   Sound.new_pitch!
 
-  play_background_music
+  # play_background_music
   play_start_sound
 
   palette = generate_palette_5
