@@ -2,7 +2,7 @@
 # https://github.com/togetherbeer/maw
 #
 # @copyright 2021 mooff <mooff@@together.beer>
-# @version 1.3.4
+# @version 1.3.6
 # @license AGPLv3
 
 $outputs = $args.outputs
@@ -99,15 +99,15 @@ module Maw
       end
     end
 
-    def args
+    private def args
       $args
     end
 
-    def tick_count
+    private def tick_count
       Kernel.tick_count
     end
 
-    def controls &blk
+    private def controls &blk
       $default_controls ||= ::Maw::Controls.new
       $default_controls.instance_eval(&blk) if blk
       $default_controls
@@ -132,6 +132,16 @@ module Maw
 
     alias :production? :prod?
     alias :development? :dev?
+
+    DESKTOP_PLATFORMS = ['Windows', 'Linux', 'Mac'].freeze
+
+    def desktop?
+      DESKTOP_PLATFORMS.include? $gtk.platform
+    end
+
+    instance_methods(false).each do |method|
+      private method
+    end
   end
 
   class Controls
