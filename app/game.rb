@@ -66,8 +66,6 @@ init {
 }
 
 tick {
-  next if controls.pause_latch?
-
   if controls.reset_down?
     init
   end
@@ -84,6 +82,10 @@ tick {
     $state.balls << ball!()
   end
 
+  sprites << $state.balls
+
+  next if controls.pause_latch?
+
   input
   collision
   motion
@@ -93,8 +95,6 @@ tick {
       player.a = 50 + (Math.sin(tick_count / 30) + 1) / 2 * 150
     end
   end
-
-  sprites << $state.balls
 
   if controls.debug?
     solids << $state.nets.values.map { |net|
