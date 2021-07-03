@@ -1,6 +1,6 @@
 Maw!
 
-time_ticks! log_interval: 60 unless production?
+time_ticks! log_interval: 180 unless production?
 
 ACCELERATION_NORMAL = 0.9
 ACCELERATION_MOVE = 0.9
