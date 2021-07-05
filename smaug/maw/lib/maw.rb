@@ -2,8 +2,16 @@
 # https://github.com/togetherbeer/maw
 #
 # @copyright 2021 mooff <mooff@@together.beer>
-# @version 1.3.9
+# @version 1.4.0
 # @license AGPLv3
+
+if $maw_version and $maw_source_location != __FILE__
+  puts "Maw has already been loaded from another location: #{$maw_source_location} (version #{$maw_version}).\nThis version (#{__FILE__}) will now abort, leaving the existing library unchanged."
+  return
+end
+
+$maw_version = "1.4.0"
+$maw_source_location = __FILE__
 
 $outputs = $args.outputs
 
@@ -16,13 +24,14 @@ def Maw!
   include Maw::Helpers
 end
 
-def ergonomic!
+private def maw?; true; end
+private def maw_version; $maw_version; end
+
+private def ergonomic!
   include Maw::Ergonomic
 end
 
 module Maw
-  def maw?; true; end
-
   module Init
     def init &blk
       if blk
@@ -134,9 +143,10 @@ module Maw
     alias :development? :dev?
 
     DESKTOP_PLATFORMS = ['Windows', 'Linux', 'Mac'].freeze
+    IS_DESKTOP_PLATFORM = DESKTOP_PLATFORMS.include? $gtk.platform
 
     def desktop?
-      DESKTOP_PLATFORMS.include? $gtk.platform
+      IS_DESKTOP_PLATFORM
     end
 
     instance_methods(false).each do |method|
@@ -154,7 +164,9 @@ module Maw
     
     def initialize name=nil, &blk
       @name = name || Controls.next_name
-      @latch = {}
+
+      @latch_state        = {}
+      @latch_last_updated = {}
 
       instance_exec(&blk) if blk
       self
@@ -162,7 +174,7 @@ module Maw
 
     def to_s; "[#{name}]"; end
 
-    def is? state, device, key
+    def input_state state, device, key
       case device
       when :mouse
         # mouse doesn't support state qualifiers .key_down, .key_held etc
@@ -181,9 +193,22 @@ module Maw
     end
 
     def any? state, map
-      map.any? do |(device, keys)|
-        keys.any? { |key| is? state, device, key }
+      for device, keys in map
+        for key in keys
+          return true if input_state(state, device, key)
+        end
       end
+      false
+    end
+
+    def find state, map
+      for device, keys in map
+        for key in keys
+          val = input_state(state, device, key)
+          return val if val
+        end
+      end
+      nil
     end
 
     def define action, map
@@ -226,41 +251,39 @@ module Maw
     private
 
     def define_down action, map
-      [:"#{action}_down", :"#{action}_down?"].each do |name|
-        define_singleton_method(name) { any? :key_down, map }
-      end
+      define_singleton_method(:"#{action}_down")  { find :key_down, map }
+      define_singleton_method(:"#{action}_down?") { any? :key_down, map }
     end
 
     def define_held action, map
-      [:"#{action}_held", :"#{action}_held?"].each do |name|
-        define_singleton_method(name) { any? :key_held, map }
-      end
+      define_singleton_method(:"#{action}_held")  { find :key_held, map }
+      define_singleton_method(:"#{action}_held?") { any? :key_held, map }
     end
 
     def define_up action, map
-      [:"#{action}_up", :"#{action}_up?"].each do |name|
-        define_singleton_method(name) { any? :key_up, map }
-      end
+      define_singleton_method(:"#{action}_up")  { find :key_up, map }
+      define_singleton_method(:"#{action}_up?") { any? :key_up, map }
     end
 
     def define_latch action, map
-      [:"#{action}_latch", :"#{action}_latch?"].each do |name|
-        define_singleton_method(name) {
-          if any?(:key_down, map)
-            @latch[action] = !@latch[action]
-          else
-            @latch[action]
-          end
-        }
-      end
+      define_singleton_method(:"#{action}_latch") {
+        if state = find(:key_down, map)
+          break if @latch_last_updated[action] == tick_count
+          @latch_state[action] = !@latch_state[action]
+          @latch_last_updated[action] = tick_count
+        else
+          @latch_last_updated[action]
+        end
+      }
+      define_singleton_method(:"#{action}_latch?") {
+        send(:"#{action}_latch")
+        @latch_state[action]
+      }
     end
 
     def define_active action, map
-      [:"#{action}", :"#{action}?"].each do |name|
-        define_singleton_method(name) {
-          any?(:key_down, map) or any?(:key_held, map)
-        }
-      end
+      define_singleton_method(action)        { find(:key_down, map) or find(:key_held, map) }
+      define_singleton_method(:"#{action}?") { any?(:key_down, map) or any?(:key_held, map) }
     end
 
     def normalize map
