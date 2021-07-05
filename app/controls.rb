@@ -21,23 +21,23 @@ end
 # Player Controls
 
 $control_schemes = {
-  top: {
+  left: {
     left: {keyboard: :w, controller_two: :left},
     right: {keyboard: :r, controller_two: :right},
     brake: {keyboard: :e, controller_two: :l2},
     boost: {keyboard: :q, controller_two: :r2},
     kick: {keyboard: [:shift, :space], controller_two: :a},
   },
-  left: {
+  right: {
     left: {keyboard: :u, controller_three: :up},
     right: {keyboard: :o, controller_three: :down},
     brake: {keyboard: :i, controller_three: :l2},
     boost: {keyboard: :p, controller_three: :r2},
     kick: {keyboard: [:shift, :space], controller_three: :a},
   },
-  right: {
-    left: {keyboard: :l, controller_one: :left},
-    right: {keyboard: :j, controller_one: :right},
+  top: {
+    left: {keyboard: :j, controller_one: :right},
+    right: {keyboard: :l, controller_one: :left},
     brake: {keyboard: :k, controller_one: :l2},
     boost: {keyboard: :semicolon, controller_one: :r2},
     kick: {keyboard: [:shift, :space], controller_one: :a},
