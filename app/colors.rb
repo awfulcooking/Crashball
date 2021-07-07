@@ -45,4 +45,4 @@ module Colors
   end
 end
 
-include Colors
+Colors.extend Colors

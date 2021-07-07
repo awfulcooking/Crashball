@@ -21,7 +21,7 @@ init {
   Sound.play_game_start
   # Sound.play_background_music
 
-  palette = generate_palette_5
+  palette = Colors.generate_palette_5
   bg_color = palette[4]
 
   static_solids << $state.background = [

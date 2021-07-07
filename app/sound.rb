@@ -32,15 +32,16 @@ module Sound
   def play_game_start
     audio[:game_start] = {
       input: 'sounds/GameStart.wav',
-      pitch: Sound.pitch_offset + rand/2 + 0.1 * (($state.num_game_starts += 1) % 20) # + ((rand < 0.2) ? -3 : 0)
+      pitch: Sound.pitch_offset + rand/3 + 0.1 * (($state.num_game_starts += 1) % 20) # + ((rand < 0.2) ? -3 : 0)
     }
   end
 
   def play_net ball, position
+    return
     audio[sound_id('net')] = {
       input: 'sounds/GameStart.wav',
-      pitch: Sound.pitch_offset + 0.3 + %i(top right left bottom).index(position) / 18.0,
-      gain: 0.7
+      pitch: Sound.pitch_offset + 0.2 + %i(top right left bottom).index(position) / 18.0,
+      gain: 0.4
     }
   end
 
