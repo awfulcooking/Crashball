@@ -15,7 +15,7 @@ def player!(opts={})
     vertical: false,
 
     v: (5+rand(20)).rand_sign,
-    dv: ACCELERATION_NORMAL,
+    dv: Scenes::Gameplay::ACCELERATION_NORMAL,
 
     score: 10,
     controls: nil,
