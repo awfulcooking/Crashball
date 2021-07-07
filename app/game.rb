@@ -40,7 +40,7 @@ init {
     max_position = player.vertical ? grid.h/2 : grid.w/2
     position = max_position/2 + rand(200) - 100
 
-    size = PLAYER_MIN_WIDTH + rand(player.vertical ? 50 : 200)
+    size = PLAYER_MIN_WIDTH + rand(player.vertical ? 25 : 200)
 
     if player.vertical
       player.y = position
