@@ -33,10 +33,11 @@ def ball!(opts={})
     h: size * 16,
     vx: (7+rand(2)).rand_sign,
     vy: (7+rand(2)).rand_sign,
-    a: rand(70) + 160,
+    a: rand(100) + 130,
     path: "sprites/circle/#{color}.png",
 
     rotation: 2,
+    angle: 0,
 
     size: size,
     color: color,
