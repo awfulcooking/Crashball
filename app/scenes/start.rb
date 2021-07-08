@@ -2,7 +2,7 @@ module Scenes
   class Start
     def initialize(opts = {})
       opts = {
-        bounce: true,
+        bounce: false,
       }.merge!(opts)
 
       @bounce = opts[:bounce]
