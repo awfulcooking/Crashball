@@ -22,29 +22,29 @@ end
 
 $control_schemes = {
   left: {
-    left: {keyboard: :w, controller_two: :left},
-    right: {keyboard: :r, controller_two: :right},
+    left: {keyboard: :w, controller_two: :up},
+    right: {keyboard: :r, controller_two: :down},
     brake: {keyboard: :e, controller_two: :l2},
     boost: {keyboard: :q, controller_two: :r2},
     kick: {keyboard: [:shift, :space], controller_two: :a},
   },
   right: {
-    left: {keyboard: :u, controller_three: :up},
-    right: {keyboard: :o, controller_three: :down},
+    left: {keyboard: :u, controller_three: :down},
+    right: {keyboard: :o, controller_three: :up},
     brake: {keyboard: :i, controller_three: :l2},
     boost: {keyboard: :p, controller_three: :r2},
     kick: {keyboard: [:shift, :space], controller_three: :a},
   },
   top: {
-    left: {keyboard: :j, controller_one: :right},
-    right: {keyboard: :l, controller_one: :left},
+    left: {keyboard: :j, controller_one: :left},
+    right: {keyboard: :l, controller_one: :right},
     brake: {keyboard: :k, controller_one: :l2},
     boost: {keyboard: :semicolon, controller_one: :r2},
     kick: {keyboard: [:shift, :space], controller_one: :a},
   },
   bottom: {
-    left: {keyboard: :s, controller_four: :up},
-    right: {keyboard: :f, controller_four: :down},
+    left: {keyboard: :s, controller_four: :left},
+    right: {keyboard: :f, controller_four: :right},
     brake: {keyboard: :d, controller_four: :l2},
     boost: {keyboard: :a, controller_four: :r2},
     kick: {keyboard: [:shift, :space], controller_four: :a},
