@@ -51,8 +51,6 @@ module Scenes
     end
 
     def tick
-      background! [0, 0, 0]
-      background! [50, 80, (Math.sin(tick_count / 20.0) + 1) * 70]
       background! Colors.hsv_to_rgb(tick_count / 2 % 360, 1, 0.4)
 
       label_ease = easing.ease_spline @started_at, tick_count, @bounce ? 60 : 30, [
