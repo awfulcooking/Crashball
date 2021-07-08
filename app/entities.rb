@@ -17,7 +17,7 @@ def player!(opts={})
     v: (5+rand(20)).rand_sign,
     dv: Scenes::Gameplay::ACCELERATION_NORMAL,
 
-    score: 10,
+    score: Scenes::Gameplay::PLAYER_START_SCORE,
     controls: nil,
     npc: true,
   }.merge(color).merge! opts

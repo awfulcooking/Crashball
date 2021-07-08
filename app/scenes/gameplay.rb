@@ -9,6 +9,7 @@ module Scenes
     PLAYER_HEIGHT = 40
     PLAYER_MOVE_SPEED = 3
     PLAYER_ELEVATION = 0
+    PLAYER_START_SCORE = 20
 
     BOOST_AMOUNT = 30 # 10-ish is normal. try 50, 100, 150! then just press shift!
 
@@ -182,7 +183,7 @@ module Scenes
     def hit! position, player, ball
       Sound.play_net ball, position
       player.score -= 1 unless player.score.zero?
-      player.a -= 20
+      player.a -= 200/PLAYER_START_SCORE
 
       if $state.players.values.count { |player| player.score.zero? } == 3
         winner = $state.players.values.find { |p| !p.score.zero? }
