@@ -45,11 +45,9 @@ module Scenes
         scene! Scenes::Gameplay.new
       end
 
-      button! "Controls", 15, font
+      button! "Controls", 13, font
 
-      button! "Quit", 13, font do
-        exit
-      end
+      button!("Quit", 13, font) { exit } if desktop?
     end
 
     def tick
@@ -57,7 +55,7 @@ module Scenes
       background! [50, 80, (Math.sin(tick_count / 20.0) + 1) * 70]
       background! Colors.hsv_to_rgb(tick_count / 2 % 360, 1, 0.4)
 
-      label_ease = easing.ease_spline @started_at, tick_count, @bounce ? 80 : 40, [
+      label_ease = easing.ease_spline @started_at, tick_count, @bounce ? 60 : 30, [
         @bounce ? [0, 0.4, 0.3, 0] : nil,
         [0, 0.6, 1, 1],
       ].compact
@@ -69,7 +67,7 @@ module Scenes
         y: grid.center.y - 290 + label_ease * 500,
         size_enum: 28,
         alignment_enum: 1,
-        r: 255, g: 255, b: 200, a: 0 + label_ease * 235,
+        r: 255, g: 255, b: 200, a: -30 + label_ease * 240,
       }
 
       input
