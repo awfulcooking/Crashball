@@ -12,8 +12,6 @@ end
 init {
   outputs.clear
 
-  background! [0,0,0]
-
   $scene ||= Scenes::Start.new
   $scene.init
 }
