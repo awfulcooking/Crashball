@@ -25,15 +25,15 @@ end
 
 def ball!(opts={})
   color = [:black, :blue, :gray, :green, :indigo, :orange, :red, :violet, :white, :yellow].sample
+  vx, vy = rand(360).vector(9+rand(4))
   size = rand(6) + 2
+
   {
     x: grid.center.x,
     y: grid.center.y,
     w: size * 16,
     h: size * 16,
-    vx: (7+rand(2)).rand_sign,
-    vy: (7+rand(2)).rand_sign,
-    a: rand(100) + 130,
+    vx: vx, vy: vy,
     path: "sprites/circle/#{color}.png",
 
     rotation: 2,
