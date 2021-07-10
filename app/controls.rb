@@ -10,6 +10,8 @@ controls do
   define :pause, keyboard: :escape, controller_one: :start, controller_two: :start
   define :reset, keyboard: :delete, controller_one: :r1
 
+  define :menu_back, keyboard: [:escape, :enter, :left], controller_one: [:start]
+
   if dev?
     define :debug, keyboard: :t, controller_one: :b
     define :debug_framerate, keyboard: :end, controller_one: :x
@@ -29,17 +31,17 @@ $control_schemes = {
     kick: {keyboard: [:shift, :space], controller_two: :a},
   },
   right: {
-    left: {keyboard: :u, controller_three: :down},
-    right: {keyboard: :o, controller_three: :up},
+    left: {keyboard: :y, controller_three: :down},
+    right: {keyboard: :u, controller_three: :up},
     brake: {keyboard: :i, controller_three: :l2},
-    boost: {keyboard: :p, controller_three: :r2},
+    boost: {keyboard: :o, controller_three: :r2},
     kick: {keyboard: [:shift, :space], controller_three: :a},
   },
   top: {
-    left: {keyboard: :j, controller_one: :left},
-    right: {keyboard: :l, controller_one: :right},
+    left: {keyboard: :h, controller_one: :left},
+    right: {keyboard: :j, controller_one: :right},
     brake: {keyboard: :k, controller_one: :l2},
-    boost: {keyboard: :semicolon, controller_one: :r2},
+    boost: {keyboard: :l, controller_one: :r2},
     kick: {keyboard: [:shift, :space], controller_one: :a},
   },
   bottom: {
