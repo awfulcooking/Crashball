@@ -23,10 +23,7 @@ module Scenes
       palette = Colors.generate_palette_5
       bg_color = palette[4]
 
-      static_solids << $state.background = [
-        0, 0, grid.w, grid.h,
-        bg_color.r, bg_color.g, bg_color.b
-      ]
+      $state.background = [ bg_color.r, bg_color.g, bg_color.b ]
 
       $state.players = {
         top:    player!(y: grid.h-PLAYER_HEIGHT-PLAYER_ELEVATION, w: grid.w, h: PLAYER_HEIGHT, color: palette[0]),
@@ -67,6 +64,8 @@ module Scenes
     end
 
     def tick
+      background! $state.background
+
       if controls.quicken_held? and tick_count % 5 == 0
         $state.balls << ball!()
       end
@@ -93,6 +92,8 @@ module Scenes
         if player.score.zero?
           player.a = 50 + (Math.sin(tick_count / 30) + 1) / 2 * 150
         end
+
+        borders << [ player.x, player.y, player.w, player.h, 0, 0, 0, 200 ]
       end
 
       if controls.debug?
