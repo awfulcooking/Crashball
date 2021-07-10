@@ -79,7 +79,7 @@ module Scenes
 
       if $state.paused
         primitives << [grid.rect, 0, 0, 0, 100].solid
-        @pause_menu ||= Scenes::Start.new(bounce: false).tap(&:init)
+        @pause_menu ||= Scenes::Start.new(resume: -> { $state.paused = false }).tap(&:init)
         @pause_menu.tick
         return
       end
