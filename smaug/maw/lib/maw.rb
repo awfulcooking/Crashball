@@ -173,6 +173,7 @@ module Maw
     end
 
     def to_s; "[#{name}]"; end
+    def inspect; to_s; end
 
     def input_state state, device, key
       case device

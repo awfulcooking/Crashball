@@ -5,6 +5,6 @@ devid=moofee
 devtitle=mooff kota
 gameid=crashball
 gametitle=Crashball
-version=0.5.1
+version=0.6.0
 icon=metadata/icon.png
 compile_ruby=false
