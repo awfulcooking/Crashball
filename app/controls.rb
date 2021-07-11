@@ -24,11 +24,11 @@ end
 
 $control_schemes = {
   left: {
-    left: {keyboard: :w, controller_two: :up},
-    right: {keyboard: :r, controller_two: :down},
-    brake: {keyboard: :e, controller_two: :l2},
-    boost: {keyboard: :q, controller_two: :r2},
-    kick: {keyboard: [:shift, :space], controller_two: :a},
+    left: {keyboard: :w, controller_four: :up},
+    right: {keyboard: :r, controller_four: :down},
+    brake: {keyboard: :e, controller_four: :l2},
+    boost: {keyboard: :q, controller_four: :r2},
+    kick: {keyboard: [:shift, :space], controller_four: :a},
   },
   right: {
     left: {keyboard: :y, controller_three: :down},
@@ -38,18 +38,18 @@ $control_schemes = {
     kick: {keyboard: [:shift, :space], controller_three: :a},
   },
   top: {
-    left: {keyboard: :h, controller_one: :left},
-    right: {keyboard: :j, controller_one: :right},
-    brake: {keyboard: :k, controller_one: :l2},
-    boost: {keyboard: :l, controller_one: :r2},
-    kick: {keyboard: [:shift, :space], controller_one: :a},
+    left: {keyboard: :h, controller_two: :left},
+    right: {keyboard: :j, controller_two: :right},
+    brake: {keyboard: :k, controller_two: :l2},
+    boost: {keyboard: :l, controller_two: :r2},
+    kick: {keyboard: [:shift, :space], controller_two: :a},
   },
   bottom: {
-    left: {keyboard: :s, controller_four: :left},
-    right: {keyboard: :f, controller_four: :right},
-    brake: {keyboard: :d, controller_four: :l2},
-    boost: {keyboard: :a, controller_four: :r2},
-    kick: {keyboard: [:shift, :space], controller_four: :a},
+    left: {keyboard: :s, controller_one: :left},
+    right: {keyboard: :f, controller_one: :right},
+    brake: {keyboard: :d, controller_one: :l2},
+    boost: {keyboard: :a, controller_one: :r2},
+    kick: {keyboard: [:shift, :space], controller_one: :a},
   },
 }
 
