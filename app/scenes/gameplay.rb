@@ -66,6 +66,8 @@ module Scenes
     def tick
       background! $state.background
 
+      $gtk.hide_cursor
+
       if controls.quicken_held? and tick_count % 5 == 0
         $state.balls << ball!()
       end
@@ -81,6 +83,7 @@ module Scenes
         primitives << [grid.rect, 0, 0, 0, 100].solid
         @pause_menu ||= Scenes::Start.new(resume: -> { $state.paused = false }).tap(&:init)
         @pause_menu.tick
+        $gtk.show_cursor
         return
       end
 
